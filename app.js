@@ -48,16 +48,26 @@ function renderizarPodio(jogadores) {
 
     jogadores.forEach((jogador, index) => {
         const rank = index + 1;
-        const icon = rank === 1 ? '👑' : `${rank}º`;
+        let icon = rank === 1 ? '👑' : `${rank}º`;
         
+        // Calcula quantas barrinhas pintar de verde (de 1 a 5)
+        const totalBars = 5;
+        const activeBars = Math.round((jogador.tir / 100) * totalBars);
+        
+        let barsHtml = '';
+        for(let i = 0; i < totalBars; i++) {
+            barsHtml += `<div class="bar ${i < activeBars ? 'active' : ''}"></div>`;
+        }
+
         const html = `
             <div class="podium-item">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="font-weight: bold; width: 25px;">${icon}</span>
-                    <span style="font-size: 1.5rem;">${jogador.avatar}</span>
-                    <span>${jogador.nome}</span>
+                <div class="pilot-info">
+                    <span style="font-weight: bold; color: var(--gold);">${icon}</span>
+                    <span style="font-size: 1.2rem;">${jogador.avatar}</span>
+                    <span class="pilot-name">${jogador.nome}</span>
                 </div>
-                <div>
+                <div class="tir-container">
+                    <div class="tir-bars">${barsHtml}</div>
                     <span class="tir-value">${jogador.tir}%</span>
                 </div>
             </div>
@@ -65,7 +75,6 @@ function renderizarPodio(jogadores) {
         container.innerHTML += html;
     });
 }
-
 // Controle da Loja
 function toggleStore() {
     const modal = document.getElementById('store-modal');
