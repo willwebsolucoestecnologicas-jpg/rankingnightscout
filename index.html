@@ -1,60 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glucotchi App</title>
+    <title>Saymon's Glucotchi Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="topbar">
-        <div class="user-greeting">Hi, <span id="user-name">Player</span>!</div>
+        <div class="user-greeting">Hi, <span id="user-name">Saymon</span>!</div>
         <div class="economy">
-            <span class="coin-icon">🟡</span>
-            <span id="coin-balance">0</span> Glucocoins
-            <button id="btn-store" onclick="toggleStore()">🛒 Store</button>
+            <span class="coin-icon">🔥</span>
+            <span id="coin-balance">3000</span> Glucocoins
+            <button id="btn-store">🛒 Store</button>
         </div>
     </div>
 
     <div class="main-container">
-        <div class="glass-card dashboard-card" id="glucotchi-card">
-            <div class="glucose-display">
-                <span id="bg-value">--</span>
-                <span class="trend-arrow" id="trend">-</span>
+        <div class="neu-card dashboard-card status-high" id="glucotchi-card">
+            <div class="card-title">Status Card</div>
+            
+            <div class="glucose-header">
+                <div class="glucose-value-container">
+                    <span id="bg-value">229</span>
+                    <span class="unit">mg/dL</span>
+                </div>
+                
+                <div class="rate-gauge">
+                    <span class="rate-label">RATE</span>
+                    <div class="gauge-arc">
+                        <span class="trend-arrow" id="trend">→</span>
+                    </div>
+                </div>
             </div>
-            <div class="avatar-container" id="avatar">⏳</div>
-            <div class="coach-message" id="message">"Loading data..."</div>
+
+            <div class="avatar-container" id="avatar-container">
+                <div id="avatar" class="avatar-emoji">🥵</div> 
+            </div>
+
+            <div class="coach-section">
+                <div class="drone-icon">🤖</div>
+                <div class="coach-bubble">
+                    <span class="coach-name">Coach AI Drone</span>
+                    <div id="message">"Maximum thermal overload detected. Power levels are highly unstable. Countersign needed. Manage this heat!"</div>
+                </div>
+            </div>
         </div>
 
-        <div class="glass-card podium-card">
-            <h2>🏆 Top Pilots</h2>
+        <div class="neu-card podium-card">
+            <h2>🏆 TOP PILOTS</h2>
             <div class="podium-list" id="podium-container">
                 </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="store-modal" style="display: none;">
-        <div class="glass-card store-card">
-            <h2>Avatar Store</h2>
-            <button class="close-btn" onclick="toggleStore()">✖</button>
-            <div class="store-grid">
-                <div class="store-item">
-                    <div class="item-avatar">🐱</div>
-                    <p>Ninja Cat</p>
-                    <button onclick="buyItem('🐱', 500)">500 🟡</button>
-                </div>
-                <div class="store-item">
-                    <div class="item-avatar">🤖</div>
-                    <p>Cyborg</p>
-                    <button onclick="buyItem('🤖', 1000)">1000 🟡</button>
-                </div>
-                <div class="store-item">
-                    <div class="item-avatar">🐉</div>
-                    <p>Dragon</p>
-                    <button onclick="buyItem('🐉', 2000)">2000 🟡</button>
-                </div>
-            </div>
         </div>
     </div>
 
