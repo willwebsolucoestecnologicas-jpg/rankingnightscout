@@ -13,7 +13,7 @@
         <div class="economy">
             <span class="coin-icon">🔥</span>
             <span id="coin-balance">3000</span> Glucocoins
-            <button id="btn-store">🛒 Store</button>
+            <button id="btn-store" onclick="toggleStore()">🛒 Store</button>
         </div>
     </div>
 
@@ -52,6 +52,30 @@
             <h2>🏆 TOP PILOTS</h2>
             <div class="podium-list" id="podium-container">
                 </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="store-modal" style="display: none;">
+        <div class="neu-card store-card">
+            <h2 style="color: var(--gold); text-align: center; letter-spacing: 2px;">AVATAR STORE</h2>
+            <button class="close-btn" onclick="toggleStore()">✖</button>
+            
+            <div class="store-grid">
+                <div class="store-item neu-inset">
+                    <div class="item-avatar">🐱</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Ninja Cat</p>
+                    <button class="buy-btn" onclick="buyItem('🐱', 500)">500 🔥</button>
+                </div>
+                <div class="store-item neu-inset">
+                    <div class="item-avatar">🤖</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Cyborg</p>
+                    <button class="buy-btn" onclick="buyItem('🤖', 1000)">1000 🔥</button>
+                </div>
+                <div class="store-item neu-inset">
+                    <div class="item-avatar">🐉</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Dragon</p>
+                    <button class="buy-btn" onclick="buyItem('🐉', 2000)">2000 🔥</button>
+                </div>
+            </div>
         </div>
     </div>
 
