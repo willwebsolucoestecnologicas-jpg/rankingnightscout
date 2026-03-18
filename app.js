@@ -1,13 +1,28 @@
 // Substitua por sua URL gerada ao publicar o Apps Script como Web App
 const API_URL = "https://script.google.com/macros/s/AKfycbyNnRWfd2OZsJDH6kJTLBonPAh1CFtzgIJY368IOzjwK8enF1ku_oHnLhIuahpWBt0z/exec"; 
 const LOGGED_USER = "Saymon"; // Em um sistema real, isso viria do Login
+// Tempo de atualização: 1 minuto (60.000 milissegundos)
+const TEMPO_ATUALIZACAO_MS = 300000; 
 
+// --- O CORAÇÃO DA ATUALIZAÇÃO AUTOMÁTICA ---
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Faz a primeira busca IMEDIATAMENTE ao abrir a página
+    console.log("Iniciando Glucotchi...");
     loadDashboardData();
+
+    // 2. Configura o Loop de Atualização Automática (setInterval)
+    // Isso vai rodar a função loadDashboardData() a cada 1 minuto para sempre
+    setInterval(() => {
+        console.log("Buscando atualização automática do Nightscout...");
+        loadDashboardData();
+    }, TEMPO_ATUALIZACAO_MS);
 });
 
-// Função para buscar dados da API
+// --- SUA FUNÇÃO LOADDASHBOARDDATA() PERMANECE IGUAL ---
 async function loadDashboardData() {
+    // Exemplo visual opcional: deixar a glicemia meio opaca enquanto busca
+    document.getElementById('bg-value').style.opacity = '0.5';
+
     try {
         const response = await fetch(`${API_URL}?action=getDashboard&user=${LOGGED_USER}`);
         const data = await response.json();
@@ -16,9 +31,14 @@ async function loadDashboardData() {
         renderizarPodio(data.podio);
     } catch (error) {
         console.error("Erro ao carregar dados:", error);
-        document.getElementById("message").innerText = "Connection error. Retrying...";
+        document.getElementById("message").innerText = "Erro de conexão. Tentando novamente...";
+    } finally {
+        // Volta a opacidade normal
+        document.getElementById('bg-value').style.opacity = '1';
     }
 }
+
+// --- RESTANTE DAS SUAS FUNÇÕES (atualizarUI, renderizarPodio, etc.) PERMANECEM IGUAIS ---
 
 // Atualiza a tela principal
 function atualizarUI(data) {
