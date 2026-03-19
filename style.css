@@ -172,3 +172,49 @@ body {
     /* Efeito de botão afundando quando clica */
     box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
 }
+
+/* Emblema de Ofensiva (Foguinho) */
+.streak-badge {
+    font-size: 1.1rem;
+    color: #ff9f43;
+    margin-left: 8px;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 159, 67, 0.6);
+    animation: pulse-fire 2s infinite alternate;
+}
+
+@keyframes pulse-fire {
+    from { filter: drop-shadow(0 0 5px #ff9f43); }
+    to { filter: drop-shadow(0 0 15px #ee5253); }
+}
+
+/* Barra de XP Neumórfica e com Neon */
+.xp-container {
+    width: 85%;
+    margin: 15px auto 25px auto;
+    text-align: center;
+}
+
+.xp-label {
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.xp-bar-bg {
+    height: 14px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.xp-bar-fill {
+    height: 100%;
+    width: 0%; /* O JavaScript vai controlar isto */
+    background: linear-gradient(90deg, #f1c40f, #f39c12, #e67e22);
+    box-shadow: 0 0 15px #f39c12;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
