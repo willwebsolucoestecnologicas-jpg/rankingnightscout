@@ -5,91 +5,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saymon's Glucotchi Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
     <div class="topbar">
         <div class="user-greeting">
-            Hi, <span id="user-name">Saymon</span>!
-            <span class="streak-badge" title="Dias no Alvo">🔥 <span id="streak-count">0</span></span>
+            <span id="user-name">Saymon</span> 🔥<span id="streak-count">0</span>
         </div>
         <div class="economy">
-            
-            <button id="btn-voz" onclick="alternarVoz()" style="background: #3498db; color: #fff; border: none; padding: 8px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; margin-right: 10px; box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light); transition: all 0.3s ease;">
-                🔇 Voz Desativada
-            </button>
-            
-            <span class="coin-icon">🔥</span>
-            <span id="coin-balance">0</span> Glucocoins
-            <button id="btn-store" id="btn-store" onclick="toggleStore()">🛒 Store</button>
+            <span class="coin-icon">🔥</span><span id="coin-balance">0</span>
+            <button id="btn-voz" onclick="alternarVoz()" class="btn-icon-voz">🔊</button>
         </div>
     </div>
 
-    <div class="main-container">
-        <div class="neu-card dashboard-card status-high" id="glucotchi-card">
-            <div class="card-title">Status Card</div>
-            
-            <div class="glucose-header">
-                <div class="glucose-value-container">
+    <div class="app-container">
+        <div id="tab-home" class="tab-content active">
+            <div class="neu-card dashboard-card status-target" id="glucotchi-card">
+                <div class="card-header">
+                    <span class="card-title">STATUS CARD</span>
+                    <div class="rate-container">
+                        <span style="font-size: 0.6rem; color: #888;">RATE</span>
+                        <span class="trend-arrow" id="trend">--</span>
+                    </div>
+                </div>
+                <div class="bg-display">
                     <span id="bg-value">--</span>
                     <span class="unit">mg/dL</span>
                 </div>
                 
-                <div class="rate-gauge">
-                    <span class="rate-label">RATE</span>
-                    <div class="gauge-arc">
-                        <span class="trend-arrow" id="trend">-</span>
+                <div class="avatar-container" id="avatar-container">
+                    <div id="avatar" class="avatar-emoji">😎</div>
+                </div>
+
+                <div class="xp-container">
+                    <div class="xp-label">XP <span id="xp-value">0</span>/100</div>
+                    <div class="xp-bar-bg neu-inset">
+                        <div class="xp-bar-fill" id="xp-bar"></div>
+                    </div>
+                </div>
+                <div class="coach-container">
+                    <div class="coach-icon">🤖</div>
+                    <div class="coach-bubble">
+                        <span style="font-size: 0.6rem; color: #888; display: block; margin-bottom: 5px;">COACH AI DRONE</span>
+                        <span id="message">Conectando...</span>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="avatar-container" id="avatar-container">
-                <div id="avatar" class="avatar-emoji">😎</div> 
-            </div>
-
-            <div class="xp-container">
-                <div class="xp-label">XP <span id="xp-value">0</span>/100</div>
-                <div class="xp-bar-bg neu-inset">
-                    <div class="xp-bar-fill" id="xp-bar"></div>
-                </div>
-            </div>
-
-            <div class="coach-section">
-                <div class="drone-icon">🤖</div>
-                <div class="coach-bubble">
-                    <span class="coach-name">Coach AI Drone</span>
-                    <div id="message">Conectando...</div>
+        <div id="tab-chart" class="tab-content" style="display: none;">
+            <div class="neu-card chart-card">
+                <h3 style="color: var(--text-muted); text-align: center; margin-bottom: 15px;">Radar Histórico</h3>
+                <div class="chart-container" style="position: relative; height:50vh; width:100%">
+                    <canvas id="glicemiaChart"></canvas>
                 </div>
             </div>
         </div>
 
-        <div class="neu-card podium-card">
-            <h2>🏆 TOP PILOTS</h2>
-            <div class="podium-list" id="podium-container">
-                </div>
+        <div id="tab-podium" class="tab-content" style="display: none;">
+            <div class="neu-card podium-card">
+                <h2>🏆 TOP PILOTS</h2>
+                <div id="podium-container"></div>
+            </div>
         </div>
     </div>
-    <div class="modal-overlay" id="store-modal" style="display: none;">
-        <div class="neu-card store-card">
-            <h2 style="color: var(--gold); text-align: center; letter-spacing: 2px;">AVATAR STORE</h2>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="mudarAba('tab-home', this)">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Radar</span>
+        </button>
+        <button class="nav-item" onclick="mudarAba('tab-chart', this)">
+            <span class="nav-icon">📈</span>
+            <span class="nav-label">Gráfico</span>
+        </button>
+        <button class="nav-item" onclick="mudarAba('tab-podium', this)">
+            <span class="nav-icon">🏆</span>
+            <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-item" onclick="toggleStore()">
+            <span class="nav-icon">🛒</span>
+            <span class="nav-label">Loja</span>
+        </button>
+    </nav>
+
+    <div id="store-modal" class="modal-overlay" style="display: none;">
+        <div class="neu-card modal-content store-modal-content">
             <button class="close-btn" onclick="toggleStore()">✖</button>
+            <h2 style="color: var(--gold); margin-bottom: 25px; text-align: center; letter-spacing: 1px;">🛒 3D SKIN SHOP</h2>
             
             <div class="store-grid">
+                
                 <div class="store-item neu-inset">
-                    <div class="item-avatar">🐱</div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted);">Ninja Cat</p>
-                    <button class="buy-btn" onclick="buyItem('🐱', 500)">500 🔥</button>
+                    <img src="img/gohan.gif" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Freeza</h4>
+                        <button class="btn-buy" onclick="buyItem('img/gohan.gif', 500)">500 🔥</button>
+                    </div>
                 </div>
+
                 <div class="store-item neu-inset">
-                    <div class="item-avatar">🤖</div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted);">Cyborg</p>
-                    <button class="buy-btn" onclick="buyItem('🤖', 1000)">1000 🔥</button>
+                    <img src="https://robohash.org/seed2.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Shadow Warrior</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed2.png?set=set1&size=150x150', 1000)">1000 🔥</button>
+                    </div>
                 </div>
+
                 <div class="store-item neu-inset">
-                    <div class="item-avatar">🐉</div>
-                    <p style="font-size: 0.9rem; color: var(--text-muted);">Dragon</p>
-                    <button class="buy-btn" onclick="buyItem('🐉', 2000)">2000 🔥</button>
+                    <img src="https://robohash.org/seed3.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Futsal Star 3D</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed3.png?set=set1&size=150x150', 1500)">1500 🔥</button>
+                    </div>
                 </div>
+
+                <div class="store-item neu-inset">
+                    <img src="https://robohash.org/seed4.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Neon Racer</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed4.png?set=set1&size=150x150', 2000)">2000 🔥</button>
+                    </div>
+                </div>
+
+                <div class="store-item neu-inset">
+                    <img src="https://robohash.org/seed5.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Bio Mutant</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed5.png?set=set1&size=150x150', 2500)">2500 🔥</button>
+                    </div>
+                </div>
+
+                <div class="store-item neu-inset">
+                    <img src="https://robohash.org/seed6.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Astronaut 3D</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed6.png?set=set1&size=150x150', 3000)">3000 🔥</button>
+                    </div>
+                </div>
+
+                <div class="store-item neu-inset">
+                    <img src="https://robohash.org/seed7.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Guerreiro Saiya 3D</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed7.png?set=set1&size=150x150', 3500)">3500 🔥</button>
+                    </div>
+                </div>
+
+                <div class="store-item neu-inset">
+                    <img src="https://robohash.org/seed8.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Dino Mecha</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed8.png?set=set1&size=150x150', 4000)">4000 🔥</button>
+                    </div>
+                </div>
+
+                <div class="store-item neu-inset">
+                    <img src="https://robohash.org/seed9.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Dragon Lord 3D</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed9.png?set=set1&size=150x150', 5000)">5000 🔥</button>
+                    </div>
+                </div>
+
+                <div class="store-item neu-inset" style="border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.2);">
+                    <img src="https://robohash.org/seed10.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
+                    <div class="store-info">
+                        <h4>Glucotchi Master 3D</h4>
+                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed10.png?set=set1&size=150x150', 10000)">10000 🔥</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
