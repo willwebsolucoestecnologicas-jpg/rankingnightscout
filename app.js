@@ -1,4 +1,4 @@
-// ATENÇÃO: COLOQUE A SUA URL DO APPS SCRIPT AQUI ABAIXO!
+//URL DO APPS SCRIPT:
 const API_URL = "https://script.google.com/macros/s/AKfycbyNnRWfd2OZsJDH6kJTLBonPAh1CFtzgIJY368IOzjwK8enF1ku_oHnLhIuahpWBt0z/exec"; 
 const LOGGED_USER = "Saymon";
 const TEMPO_ATUALIZACAO_MS = 60000; 
@@ -181,4 +181,74 @@ function processarVoz(glicemia, trend, status, mensagemIA) {
     if (["↓", "⇊", "↘"].includes(trend)) alertaFisico = "Atenção piloto, energia em queda. ";
     else if (["↑", "⇈", "↗"].includes(trend)) alertaFisico = "Aviso, calor subindo. ";
     falar(`Glicemia em ${glicemia}. ${alertaFisico} ${mensagemIA}`);
+}
+
+// =========================================================================
+// DIÁRIO DE BORDO NARRATIVO (TEMA DRAGON BALL Z)
+// =========================================================================
+function gerarNarrativa(historico) {
+    const logContainer = document.getElementById('narrativa-log');
+    if (!logContainer || !historico || historico.length === 0) return;
+
+    logContainer.innerHTML = ""; // Limpa para atualizar
+
+    // Pegamos os últimos 8 eventos para mostrar no pergaminho
+    const eventos = historico.slice(-8); 
+
+    eventos.forEach((ponto) => {
+        let acao = "";
+        let icone = "";
+        const valor = ponto.valor;
+        const hora = ponto.hora;
+
+        // --- MÁGICA DO SORTEIO (MATH.RANDOM) PARA NÃO FICAR REPETITIVO ---
+
+        if (valor > 180) { // ALTA (Inimigos)
+            const frasesHigh = [
+                `Freeza lançou um ataque de Hiperglicemia (${valor})! Prepare a contra-ofensiva!`,
+                `O poder do inimigo passou de 180! (Está em ${valor}). Beba água e mantenha a calma para o combate.`,
+                `Alerta do Radar do Dragão: Anomalia de Ki detectada (${valor}). Hora de usar sua técnica especial!`
+            ];
+            acao = frasesHigh[Math.floor(Math.random() * frasesHigh.length)];
+            icone = "🔥";
+
+        } else if (valor < 70) { // BAIXA (Perigo de vida/Semente dos Deuses)
+            const frasesLow = [
+                `Energia vital caindo para ${valor}! Coma uma Semente dos Deuses (carboidrato) agora!`,
+                `Atenção! Ki quase esgotado (${valor}). Rápido, precisamos de recarga de ação rápida!`,
+                `O inimigo drenou sua energia! Alerta vermelho (${valor}), coma algo urgente para não cair em batalha!`
+            ];
+            acao = frasesLow[Math.floor(Math.random() * frasesLow.length)];
+            icone = "❄️";
+
+        } else if (valor >= 70 && valor <= 140) { // ALVO PERFEITO (Super Saiyajin)
+            const frasesTarget = [
+                `Incrível! Controle de Ki perfeito em ${valor}. É o poder do Super Saiyajin!`,
+                `Radar limpo. Glicemia cravada em ${valor}. Até o Senhor Bills está impressionado!`,
+                `Equilíbrio mestre de energia (${valor}). Você está dominando o Instinto Superior!`
+            ];
+            acao = frasesTarget[Math.floor(Math.random() * frasesTarget.length)];
+            icone = "⚡";
+
+        } else { // 141 a 180 (Atenção / Oscilação normal)
+            const frasesBorder = [
+                `Ki subindo levemente (${valor}). Mantenha a guarda alta e observe o radar!`,
+                `Pequena oscilação de poder detectada (${valor}). O treino está fazendo efeito, continue focando!`,
+                `Tudo sob controle (${valor}), mas não baixe a guarda, Guerreiro Z!`
+            ];
+            acao = frasesBorder[Math.floor(Math.random() * frasesBorder.length)];
+            icone = "🟢";
+        }
+
+        const itemHTML = `
+            <div class="narrativa-item">
+                <small style="color: var(--text-muted)">[${hora}]</small><br>
+                ${icone} ${acao}
+            </div>
+        `;
+        logContainer.innerHTML += itemHTML;
+    });
+
+    // Faz a barra de rolagem descer automaticamente para a mensagem mais recente
+    logContainer.scrollTop = logContainer.scrollHeight;
 }
