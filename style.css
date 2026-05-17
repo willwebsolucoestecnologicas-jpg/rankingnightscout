@@ -192,15 +192,18 @@ body { background-color: var(--bg-color); color: var(--text-main); min-height: 1
 }
 
 /* O "Chão" do deserto */
-#game-wrapper::after {
-    content: '';
-    position: absolute;
-    bottom: 20px;
-    left: 0;
+#game-wrapper {
     width: 100%;
-    height: 2px;
-    background: var(--target-color);
-    box-shadow: 0 0 10px var(--target-color);
+    /* Removemos o height: 220px daqui */
+    background: rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0px 10px 20px rgba(0,0,0,0.5);
+    cursor: pointer;
+    
+    /* A MÁGICA QUE TIRA A PISCADA BRANCA */
+    -webkit-tap-highlight-color: transparent; 
+    user-select: none; /* Impede selecionar texto ao clicar rápido */
 }
 
 #kalango-personagem {
