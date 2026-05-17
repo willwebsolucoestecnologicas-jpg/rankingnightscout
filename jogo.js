@@ -128,6 +128,11 @@ function iniciarJogo() {
     
     obstaculo.classList.add("animar-obstaculo");
 
+    // DESBLOQUEIO DE ÁUDIO MOBILE: Acorda o motor de som no clique do botão!
+    if(audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+
     clearInterval(loopScore);
     clearInterval(loopColisao);
     clearInterval(loopVoz);
@@ -155,7 +160,8 @@ function pular(e) {
     if (!jogoRodando) return;
     if (e) e.preventDefault(); // Evita scroll acidental na tela touch
     
-    if (personagem.classList != "animar-pulo") {
+    // Verificação para não bugar a animação tocando várias vezes rápido
+    if (!personagem.classList.contains("animar-pulo")) {
         personagem.classList.add("animar-pulo");
         tocarSom('pulo'); // TOCA SOM DO PULO!
         
