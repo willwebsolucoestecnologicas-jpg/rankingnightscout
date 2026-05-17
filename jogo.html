@@ -2,39 +2,33 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Glucotchi Runner</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="justify-content: center; overflow: hidden;">
+<body style="margin: 0; padding: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; background-color: var(--bg-color); -webkit-tap-highlight-color: transparent;">
 
-    <div class="neu-card" style="width: 100%; max-width: 600px; text-align: center;">
+    <div style="padding: 20px 20px 10px 20px; text-align: center; flex-shrink: 0; background: var(--card-bg);">
+        <div style="color: var(--text-muted); letter-spacing: 2px; font-size: 1rem; margin-bottom: 15px; font-weight: bold;">🏜️ DESERTO GLUCOTCHI</div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+            <div>Glicemia: <strong id="hud-glicemia" style="color: var(--target-color);">--</strong></div>
+            <div id="hud-status" style="color: var(--gold); font-weight: bold;">Carregando...</div>
+        </div>
+    </div>
+
+    <div id="game-wrapper" onclick="pular()" style="flex-grow: 1; border-top: 1px solid rgba(255,255,255,0.05); border-radius: 20px 20px 0 0;">
         
-        <div class="card-header" style="justify-content: center; margin-bottom: 10px;">
-            <span class="card-title">🏜️ DESERTO GLUCOTCHI</span>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem;">
-            <div>Glicemia: <strong id="hud-glicemia" style="color: var(--target-color);">--</strong> mg/dL</div>
-            <div id="hud-status" style="color: var(--gold);">Carregando piloto...</div>
-        </div>
-
-        <div id="game-wrapper" onclick="pular()">
-            <div id="placar-jogo">Score: <span id="pontuacao">0</span></div>
-            
-            <div id="kalango-personagem"></div>
-            <div id="obstaculo"></div>
-            
-            <div id="tela-overlay">
-                <h2 id="texto-overlay" style="color: var(--text-main); margin-bottom: 15px;">CARREGANDO DADOS...</h2>
-                <button id="btn-iniciar" class="btn-buy" style="display: none; width: 60%; margin: 0 auto;" onclick="iniciarJogo()">INICIAR CORRIDA</button>
-            </div>
-        </div>
-
-        <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 15px;">Toque na tela do jogo para pular!</p>
+        <div id="placar-jogo">Score: <span id="pontuacao">0</span></div>
         
-        <button class="btn-buy" style="margin-top: 20px; background: transparent; border-color: var(--text-muted); color: var(--text-muted);" onclick="window.history.back()">⬅ Voltar ao Painel</button>
-
+        <div id="kalango-personagem"></div>
+        <div id="obstaculo"></div>
+        
+        <div id="tela-overlay">
+            <h2 id="texto-overlay" style="color: var(--text-main); margin-bottom: 25px;">CARREGANDO DADOS...</h2>
+            <button id="btn-iniciar" class="btn-buy" style="display: none; width: 70%; margin: 0 auto; position: relative; z-index: 30; padding: 15px; font-size: 1.1rem;" onclick="iniciarJogo()">INICIAR CORRIDA</button>
+            
+            <button class="btn-buy" style="margin-top: 20px; width: 70%; background: transparent; border-color: var(--text-muted); color: var(--text-muted); position: relative; z-index: 30;" onclick="window.history.back()">⬅ Voltar ao Painel</button>
+        </div>
     </div>
 
     <script src="jogo.js"></script>
