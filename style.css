@@ -176,41 +176,38 @@ body { background-color: var(--bg-color); color: var(--text-main); min-height: 1
 .narrativa-container::-webkit-scrollbar-thumb { background: var(--target-color); border-radius: 10px; }
 
 /* =========================================================
-   GLUCOTCHI RUNNER - FÍSICA DO JOGO WEB
+   GLUCOTCHI RUNNER - FÍSICA DO JOGO WEB (ATUALIZADO)
    ========================================================= */
 
 #game-wrapper {
     width: 100%;
-    height: 220px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.05);
-    position: relative;
-    overflow: hidden;
-    box-shadow: inset 5px 5px 15px rgba(0,0,0,0.5);
-    cursor: pointer; /* Indica que é clicável */
-}
-
-/* O "Chão" do deserto */
-#game-wrapper {
-    width: 100%;
-    /* Removemos o height: 220px daqui */
     background: rgba(0,0,0,0.3);
     position: relative;
     overflow: hidden;
     box-shadow: inset 0px 10px 20px rgba(0,0,0,0.5);
     cursor: pointer;
-    
-    /* A MÁGICA QUE TIRA A PISCADA BRANCA */
-    -webkit-tap-highlight-color: transparent; 
-    user-select: none; /* Impede selecionar texto ao clicar rápido */
+    -webkit-tap-highlight-color: transparent; /* Tira a piscada branca */
+    user-select: none; 
 }
 
+/* O "Chão" do deserto - Levantado para 80px */
+#game-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 80px; 
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--target-color);
+    box-shadow: 0 0 10px var(--target-color);
+}
+
+/* Personagem - Levantado para 82px */
 #kalango-personagem {
     width: 50px;
     height: 50px;
     position: absolute;
-    bottom: 22px; /* Em cima da linha do chão */
+    bottom: 82px; 
     left: 40px;
     background-size: contain;
     background-position: center;
@@ -222,14 +219,15 @@ body { background-color: var(--bg-color); color: var(--text-main); min-height: 1
     filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
 }
 
+/* Obstáculo - Levantado para 82px */
 #obstaculo {
     width: 25px;
     height: 45px;
-    background: linear-gradient(180deg, var(--high-color), #8b0000); /* Cacto vermelho */
+    background: linear-gradient(180deg, var(--high-color), #8b0000);
     border-radius: 5px 5px 0 0;
     position: absolute;
-    bottom: 22px;
-    right: -50px; /* Nasce fora da tela */
+    bottom: 82px; 
+    right: -50px; 
     box-shadow: 0 0 10px var(--high-color);
 }
 
@@ -259,25 +257,24 @@ body { background-color: var(--bg-color); color: var(--text-main); min-height: 1
     z-index: 20;
 }
 
-/* ANIMAÇÃO DO PULO - A duração vem da variável CSS alterada pelo JS! */
 .animar-pulo {
     animation: puloKalango var(--velocidade-pulo, 0.6s) ease-out;
 }
 
+/* Animação do Pulo - Alturas atualizadas */
 @keyframes puloKalango {
-    0%   { bottom: 22px; }
-    40%  { bottom: 120px; } /* Altura máxima */
-    50%  { bottom: 120px; } /* Fica no ar um pouquinho */
-    60%  { bottom: 120px; }
-    100% { bottom: 22px; }
+    0%   { bottom: 82px; }
+    40%  { bottom: 200px; } 
+    50%  { bottom: 200px; } 
+    60%  { bottom: 200px; }
+    100% { bottom: 82px; }
 }
 
-/* ANIMAÇÃO DO OBSTÁCULO - Velocidade vem do JS */
 .animar-obstaculo {
     animation: moverObstaculo var(--velocidade-obstaculo, 1.8s) infinite linear;
 }
 
 @keyframes moverObstaculo {
     0%   { right: -50px; }
-    100% { right: 100%; } /* Atravessa a tela inteira */
+    100% { right: 100%; } 
 }
