@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flappy Glucotchi</title>
+    <link rel="stylesheet" href="style.css?v=4">
+</head>
+<body style="margin: 0; padding: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; background-color: var(--bg-color); -webkit-tap-highlight-color: transparent;">
+
+    <div style="width: 100%; padding: 20px 20px 10px 20px; text-align: center; flex-shrink: 0; background: var(--card-bg);">
+        <div style="color: var(--text-muted); letter-spacing: 2px; font-size: 1rem; margin-bottom: 15px; font-weight: bold;">🦅 FLAPPY GLUCOTCHI</div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.95rem;">
+            <div>Glicemia: <strong id="hud-glicemia" style="color: var(--target-color);">--</strong></div>
+            <div id="hud-status" style="color: var(--gold); font-weight: bold;">Carregando...</div>
+        </div>
+    </div>
+
+    <div id="flappy-wrapper" style="flex-grow: 1; border-top: 1px solid rgba(255,255,255,0.05); border-radius: 20px 20px 0 0; position: relative; width: 100%;">
+        
+        <div id="placar-flappy">Score: <span id="pontuacao-flappy">0</span></div>
+
+        <div id="flappy-bird"></div>
+        <div id="pipe-top" class="pipe"></div>
+        <div id="pipe-bottom" class="pipe"></div>
+
+        <div id="tela-overlay-flappy">
+            <h2 id="texto-overlay-flappy" style="color: var(--text-main); margin-bottom: 25px;">INICIANDO...</h2>
+            <button id="btn-iniciar-flappy" class="btn-buy" style="display: none; width: 70%; margin: 0 auto; padding: 15px; font-size: 1.1rem; z-index: 50; position: relative;" onclick="iniciarFlappy()">BORA VOAR</button>
+            <button class="btn-buy" style="margin-top: 20px; width: 70%; background: transparent; border-color: var(--text-muted); color: var(--text-muted); z-index: 50; position: relative;" onclick="window.history.back()">⬅ Voltar ao Painel</button>
+        </div>
+    </div>
+
+    <script src="flappy.js?v=4"></script>
+</body>
+</html>
