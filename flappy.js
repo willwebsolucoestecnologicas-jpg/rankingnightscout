@@ -14,14 +14,16 @@ let jogoRodando = false;
 let score = 0;
 let loopJogo;
 
-// Variáveis de Física (Elas mudam conforme a glicemia)
+// ==========================================
+// VARIÁVEIS DE FÍSICA (AGORA SUAVIZADAS!)
+// ==========================================
 let birdY = 200;
 let velocity = 0;
-let gravity = 0.5;
-let jumpStrength = -8;
+let gravity = 0.25;       // Era 0.5 (Agora cai bem mais devagar)
+let jumpStrength = -5.5;  // Era -8 (Pulo mais curto e controlado)
 let pipeX = window.innerWidth;
-let pipeSpeed = 4;
-let pipeGap = 150; // Espaço do buraco entre os tubos
+let pipeSpeed = 3.5;      // Era 4 (Canos vêm um pouco mais lentos)
+let pipeGap = 180;        // Era 150 (Buraco maior para facilitar a passagem)
 
 document.addEventListener("DOMContentLoaded", async () => {
     try {
@@ -51,27 +53,27 @@ function prepararJogo(data) {
     document.getElementById("hud-glicemia").innerText = glicemia;
     const hudStatus = document.getElementById("hud-status");
 
-    // LÓGICA DA GLICEMIA (Mudando a Física do Flappy Bird)
+    // LÓGICA DA GLICEMIA (Física Balanceada)
     if (glicemia >= 70 && glicemia <= 140) {
         hudStatus.innerText = "⚡ VOO PERFEITO";
-        gravity = 0.5;
-        jumpStrength = -8;
-        pipeSpeed = 4.5;
-        pipeGap = 160;
+        gravity = 0.25;
+        jumpStrength = -5.5;
+        pipeSpeed = 3.5;
+        pipeGap = 180;
     } else if (glicemia > 140) {
         hudStatus.innerText = "🔥 PESADO/CAINDO RÁPIDO";
         hudStatus.style.color = "var(--high-color)";
-        gravity = 0.8; // Gravidade muito forte (cai igual pedra)
-        jumpStrength = -10; // Pulo tem que ser forte para compensar
-        pipeSpeed = 4;
-        pipeGap = 180; // Buraco maior para não ficar impossível
+        gravity = 0.4;        // Ainda é mais pesado, mas controlável
+        jumpStrength = -7;    // Pulo compensa o peso extra
+        pipeSpeed = 3;        // Mais devagar para dar tempo de pensar
+        pipeGap = 210;        // Buraco bem largo pra não ser impossível
     } else {
         hudStatus.innerText = "❄️ FRAQUEZA/SEM FORÇA";
         hudStatus.style.color = "var(--low-color)";
-        gravity = 0.4;
-        jumpStrength = -6; // Pulo fraco (sobe pouco a cada toque)
-        pipeSpeed = 6; // Tubos vêm mais rápido (simula desespero)
-        pipeGap = 150;
+        gravity = 0.2;        // Quase flutuando
+        jumpStrength = -4.5;  // Sobe bem pouquinho (tem que bater asa rápido)
+        pipeSpeed = 4.5;      // Canos velozes
+        pipeGap = 170;
     }
 
     textoOverlay.innerText = "TUDO PRONTO!";
@@ -84,55 +86,47 @@ function iniciarFlappy() {
     score = 0;
     placar.innerText = score;
     
-    // Posições Iniciais
     birdY = wrapper.offsetHeight / 2;
     velocity = 0;
     pipeX = window.innerWidth;
     posicionarCanos();
 
-    // Inicia o motor a 50 frames por segundo
     clearInterval(loopJogo);
     loopJogo = setInterval(atualizarJogo, 20);
 }
 
 function posicionarCanos() {
-    // Sorteia a altura do buraco
-    let minHoleY = 100;
-    let maxHoleY = wrapper.offsetHeight - pipeGap - 100;
+    let minHoleY = 80;
+    let maxHoleY = wrapper.offsetHeight - pipeGap - 80;
     let holeY = Math.floor(Math.random() * (maxHoleY - minHoleY + 1)) + minHoleY;
 
     pipeTop.style.height = holeY + "px";
     pipeBottom.style.height = (wrapper.offsetHeight - holeY - pipeGap) + "px";
 }
 
-// Mecânica do Toque na Tela
 function pular(e) {
     if (!jogoRodando) return;
-    if(e) e.preventDefault(); // Evita dar zoom na tela sem querer
+    if(e) e.preventDefault(); 
     
     velocity = jumpStrength;
-    bird.style.transform = "rotate(-20deg)"; // Bico pra cima ao pular
+    bird.style.transform = "rotate(-20deg)"; 
 }
 
-wrapper.addEventListener('touchstart', pular);
+wrapper.addEventListener('touchstart', pular, {passive: false});
 wrapper.addEventListener('mousedown', pular);
 
 function atualizarJogo() {
-    // 1. FÍSICA DO PÁSSARO (Gravidade agindo)
     velocity += gravity;
     birdY += velocity;
     bird.style.top = birdY + "px";
 
-    // Suaviza a rotação do bico caindo
     if (velocity > 0) {
-        bird.style.transform = `rotate(${Math.min(velocity * 3, 90)}deg)`;
+        bird.style.transform = `rotate(${Math.min(velocity * 4, 90)}deg)`;
     }
 
-    // 2. MOVIMENTO DOS CANOS
     pipeX -= pipeSpeed;
     
-    // Se o cano passou da tela, reseta ele lá na direita e marca o gol
-    if (pipeX < -60) { // 60 é a largura do cano
+    if (pipeX < -60) { 
         pipeX = window.innerWidth;
         posicionarCanos();
         score++;
@@ -142,7 +136,6 @@ function atualizarJogo() {
     pipeTop.style.left = pipeX + "px";
     pipeBottom.style.left = pipeX + "px";
 
-    // 3. COLISÕES FATAAAAIS
     verificarColisao();
 }
 
@@ -152,16 +145,17 @@ function verificarColisao() {
     let bottomRect = pipeBottom.getBoundingClientRect();
     let wrapperRect = wrapper.getBoundingClientRect();
 
-    // Bateu no teto ou caiu no chão
+    // Uma leve "colher de chá" na colisão pra não bater na pontinha da asa
+    let margemErro = 8; 
+
     if (birdRect.top <= wrapperRect.top || birdRect.bottom >= wrapperRect.bottom) {
         gameOver();
         return;
     }
 
-    // Bateu nos canos de cima ou de baixo
     if (
-        (birdRect.right > topRect.left && birdRect.left < topRect.right && birdRect.top < topRect.bottom) ||
-        (birdRect.right > bottomRect.left && birdRect.left < bottomRect.right && birdRect.bottom > bottomRect.top)
+        (birdRect.right - margemErro > topRect.left && birdRect.left + margemErro < topRect.right && birdRect.top + margemErro < topRect.bottom) ||
+        (birdRect.right - margemErro > bottomRect.left && birdRect.left + margemErro < bottomRect.right && birdRect.bottom - margemErro > bottomRect.top)
     ) {
         gameOver();
     }
