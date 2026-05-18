@@ -1,117 +1,131 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saymon's Glucotchi Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Glucotchi Play</title>
+    <link rel="stylesheet" href="style.css?v=10">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="topbar">
-        <div class="user-greeting">
-            <span id="user-name">Saymon</span> 🔥<span id="streak-count">0</span>
-        </div>
-        <div class="economy">
-            <span class="coin-icon">🔥</span><span id="coin-balance">0</span>
-            <button id="btn-voz" onclick="alternarVoz()" class="btn-icon-voz">🔊</button>
-        </div>
-    </div>
 
-    <div class="app-container">
+    <header class="play-header">
+        <div class="player-profile">
+            <span class="player-avatar-mini">🔥</span>
+            <div class="player-info">
+                <span class="player-title">PILOTO</span>
+                <span id="user-name" class="player-name">Saymon</span>
+            </div>
+        </div>
+        <div class="play-stats">
+            <div class="stat-pill orange-pill">
+                <span class="stat-icon">🔥</span>
+                <span id="streak-count" class="stat-value">0</span>
+            </div>
+            <div class="stat-pill blue-pill" onclick="toggleStore()">
+                <span class="stat-icon">💎</span>
+                <span id="coin-balance" class="stat-value">0</span>
+            </div>
+            <button id="btn-voz" onclick="alternarVoz()" class="btn-audio-play">🔊</button>
+        </div>
+    </header>
+
+    <main class="play-container">
+        
         <div id="tab-home" class="tab-content active">
+            
             <div class="neu-card dashboard-card status-target" id="glucotchi-card">
-                <div class="card-header">
-                    <span class="card-title">STATUS CARD</span>
-                    <div class="rate-container">
-                        <span style="font-size: 0.6rem; color: #888;">RATE</span>
-                        <span class="trend-arrow" id="trend">--</span>
-                    </div>
+                
+                <div class="card-top-bar">
+                    <span class="card-badge">NÍVEL DE KI</span>
+                    <span class="trend-icon" id="trend">--</span>
                 </div>
-                <div class="bg-display">
-                    <span id="bg-value">--</span>
-                    <span class="unit">mg/dL</span>
+
+                <div class="glucose-hero">
+                    <span id="bg-value" class="glucose-big">--</span>
+                    <span class="glucose-unit">mg/dL</span>
                 </div>
                 
-                <div class="avatar-container" id="avatar-container">
-                    <div id="avatar" class="avatar-emoji">😎</div>
+                <div class="stage-container">
+                    <div id="avatar-container" class="avatar-stage">
+                        <div id="avatar" class="avatar-emoji">😎</div>
+                    </div>
+                    <div class="stage-shadow"></div>
                 </div>
 
-                <div class="xp-container">
-                    <div class="xp-label">XP <span id="xp-value">0</span>/100</div>
-                    <div class="xp-bar-bg neu-inset">
-                        <div class="xp-bar-fill" id="xp-bar"></div>
+                <div class="xp-play-section">
+                    <div class="xp-play-header">
+                        <span class="xp-label">EXPERIÊNCIA</span>
+                        <span class="xp-numbers"><span id="xp-value">0</span>/100</span>
+                    </div>
+                    <div class="xp-play-track">
+                        <div class="xp-play-fill" id="xp-bar"></div>
                     </div>
                 </div>
-                <div class="coach-container">
-                    <div class="coach-icon">🤖</div>
-                    <div class="coach-bubble">
-                        <span style="font-size: 0.6rem; color: #888; display: block; margin-bottom: 5px;">COACH AI DRONE</span>
-                        <span id="message">Conectando...</span>
+
+                <div class="robot-chat">
+                    <div class="robot-head">🤖</div>
+                    <div class="robot-bubble">
+                        <p id="message">A carregar os sistemas de combate...</p>
                     </div>
                 </div>
+
             </div>
         </div>
 
         <div id="tab-chart" class="tab-content" style="display: none;">
-            <div class="neu-card chart-card">
-                <h3 style="color: var(--text-muted); text-align: center; margin-bottom: 15px;">Radar Histórico</h3>
-                <div class="chart-container" style="position: relative; height:50vh; width:100%">
+            <div class="neu-card chart-play-card">
+                <h2 class="play-title">Radar de Batalha</h2>
+                <div class="chart-box">
                     <canvas id="glicemiaChart"></canvas>
                 </div>
             </div>
 
-            <div class="neu-card log-narrativo-card">
-                <div class="card-header">
-                    <span class="card-title">📜 DIÁRIO DE BORDO</span>
-                </div>
-                <div id="narrativa-log" class="neu-inset narrativa-container">
-                    <p class="narrativa-item">Iniciando sistemas de monitoramento...</p>
+            <div class="neu-card log-play-card">
+                <h2 class="play-title">Diário de Bordo</h2>
+                <div id="narrativa-log" class="log-play-container">
+                    <p class="log-entry">A ligar radares...</p>
                 </div>
             </div>
         </div>
 
         <div id="tab-podium" class="tab-content" style="display: none;">
-            <div class="neu-card podium-card">
-                <h2>🏆 TOP PILOTS</h2>
-                <div id="podium-container"></div>
+            <div class="neu-card podium-play-card">
+                <h2 class="play-title">Top Pilotos</h2>
+                <div id="podium-container" class="podium-play-list"></div>
             </div>
         </div>
+
         <div id="tab-jogos" class="tab-content" style="display: none;">
-            <div class="neu-card podium-card">
-                <h2 style="color: var(--target-color); margin-bottom: 25px; text-align: center; letter-spacing: 1px;">🎮 ARCADE</h2>
-                
-                <div class="store-grid">
-                    
-                    <div class="store-item neu-inset" onclick="window.location.href='jogo.html'" style="cursor: pointer; border: 1px solid var(--target-color);">
-                        <div style="font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(46, 204, 113, 0.4));">🏃‍♂️🌵</div>
-                        <div class="store-info">
-                            <h4 style="color: var(--target-color);">Deserto Run</h4>
-                            <span style="font-size: 0.75rem; color: var(--text-muted);">Pule para sobreviver!</span>
-                        </div>
-                    </div>
+            <div class="arcade-play-header">
+                <h2>ESCOLHE O TEU JOGO!</h2>
+            </div>
+            
+            <div class="arcade-play-grid">
+                <div class="neu-card game-play-card" onclick="window.location.href='jogo.html'">
+                    <div class="game-play-icon bg-green">🏃‍♂️</div>
+                    <h3>Deserto Run</h3>
+                    <button class="btn-play-action">JOGAR</button>
+                </div>
 
-                    <div class="store-item neu-inset" onclick="window.location.href='flappy.html'" style="cursor: pointer; border: 1px solid var(--target-color);">
-                        <div style="font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 0 10px rgba(52, 152, 219, 0.4));">🦅</div>
-                        <div class="store-info">
-                            <h4 style="color: var(--target-color);">Flappy Bird</h4>
-                            <span style="font-size: 0.75rem; color: var(--text-muted);">Voe pelos canos!</span>
-                        </div>
-                    </div>
-
+                <div class="neu-card game-play-card" onclick="window.location.href='flappy.html'">
+                    <div class="game-play-icon bg-blue">🦅</div>
+                    <h3>Flappy Bird</h3>
+                    <button class="btn-play-action">JOGAR</button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <nav class="bottom-nav">
+    </main>
+
+    <nav class="bottom-nav play-nav">
         <button class="nav-item active" onclick="mudarAba('tab-home', this)">
             <span class="nav-icon">🏠</span>
-            <span class="nav-label">Radar</span>
+            <span class="nav-label">Início</span>
         </button>
         <button class="nav-item" onclick="mudarAba('tab-chart', this)">
-            <span class="nav-icon">📈</span>
-            <span class="nav-label">Gráfico</span>
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Estatísticas</span>
         </button>
         <button class="nav-item" onclick="mudarAba('tab-podium', this)">
             <span class="nav-icon">🏆</span>
@@ -127,57 +141,43 @@
         </button>
     </nav>
 
-    <div id="store-modal" class="modal-overlay" style="display: none;">
-        <div class="neu-card modal-content store-modal-content">
-            <button class="close-btn" onclick="toggleStore()">✖</button>
-            <h2 style="color: var(--gold); margin-bottom: 25px; text-align: center; letter-spacing: 1px;">🛒 3D SKIN SHOP</h2>
+    <div id="store-modal" class="modal-play-backdrop" style="display: none;">
+        <div class="neu-card modal-play-content">
+            <div class="modal-play-header">
+                <h2>LOJA DE SKINS</h2>
+                <button class="btn-play-close" onclick="toggleStore()">✖</button>
+            </div>
             
-            <div class="store-grid">
-                
-                <div class="store-item neu-inset">
-                    <img src="freeza.gif" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Freeza</h4>
-                        <button class="btn-buy" onclick="buyItem('freeza.gif', 500)">500 🔥</button>
-                    </div>
+            <div class="shop-play-grid">
+                <div class="shop-play-item">
+                    <img src="freeza.gif" class="shop-img">
+                    <h4>Freeza</h4>
+                    <button class="btn-play-buy" onclick="buyItem('freeza.gif', 500)">500 💎</button>
                 </div>
-
-                <div class="store-item neu-inset">
-                    <img src="yuta.gif" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Yuta</h4>
-                        <button class="btn-buy" onclick="buyItem('yuta.gif', 1000)">1000 🔥</button>
-                    </div>
+                <div class="shop-play-item">
+                    <img src="yuta.gif" class="shop-img">
+                    <h4>Yuta</h4>
+                    <button class="btn-play-buy" onclick="buyItem('yuta.gif', 1000)">1000 💎</button>
                 </div>
-
-                <div class="store-item neu-inset">
-                    <img src="ds.gif" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Tanjiro</h4>
-                        <button class="btn-buy" onclick="buyItem('ds.gif', 1500)">1500 🔥</button>
-                    </div>
+                <div class="shop-play-item">
+                    <img src="ds.gif" class="shop-img">
+                    <h4>Tanjiro</h4>
+                    <button class="btn-play-buy" onclick="buyItem('ds.gif', 1500)">1500 💎</button>
                 </div>
-
-                <div class="store-item neu-inset">
-                    <img src="one piece.gif" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Luffy</h4>
-                        <button class="btn-buy" onclick="buyItem('one piece.gif', 2000)">2000 🔥</button>
-                    </div>
+                <div class="shop-play-item">
+                    <img src="one piece.gif" class="shop-img">
+                    <h4>Luffy</h4>
+                    <button class="btn-play-buy" onclick="buyItem('one piece.gif', 2000)">2000 💎</button>
                 </div>
-
-                <div class="store-item neu-inset">
-                    <img src="neymar.png" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Neymar</h4>
-                        <button class="btn-buy" onclick="buyItem('neymar.png', 2500)">2500 🔥</button>
-                    </div>
+                <div class="shop-play-item">
+                    <img src="neymar.png" class="shop-img">
+                    <h4>Neymar</h4>
+                    <button class="btn-play-buy" onclick="buyItem('neymar.png', 2500)">2500 💎</button>
                 </div>
-
                 <div class="store-item neu-inset">
                     <img src="itadore.gif" class="item-avatar-img" alt="Skin">
                     <div class="store-info">
-                        <h4>Itadore</h4>
+                        <h4>Itadori</h4>
                         <button class="btn-buy" onclick="buyItem('Itadore.gif', 2500)">2500 🔥</button>
                     </div>
                 </div>
@@ -187,47 +187,6 @@
                     <div class="store-info">
                         <h4>Goku</h4>
                         <button class="btn-buy" onclick="buyItem('goku.png', 2500)">2500 🔥</button>
-                    </div>
-                </div>
-
-
-                <div class="store-item neu-inset">
-                    <img src="https://robohash.org/seed6.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Astronaut 3D</h4>
-                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed6.png?set=set1&size=150x150', 3000)">3000 🔥</button>
-                    </div>
-                </div>
-
-                <div class="store-item neu-inset">
-                    <img src="https://robohash.org/seed7.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Guerreiro Saiya 3D</h4>
-                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed7.png?set=set1&size=150x150', 3500)">3500 🔥</button>
-                    </div>
-                </div>
-
-                <div class="store-item neu-inset">
-                    <img src="https://robohash.org/seed8.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Dino Mecha</h4>
-                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed8.png?set=set1&size=150x150', 4000)">4000 🔥</button>
-                    </div>
-                </div>
-
-                <div class="store-item neu-inset">
-                    <img src="https://robohash.org/seed9.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Dragon Lord 3D</h4>
-                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed9.png?set=set1&size=150x150', 5000)">5000 🔥</button>
-                    </div>
-                </div>
-
-                <div class="store-item neu-inset" style="border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.2);">
-                    <img src="https://robohash.org/seed10.png?set=set1&size=150x150" class="item-avatar-img" alt="Skin">
-                    <div class="store-info">
-                        <h4>Glucotchi Master 3D</h4>
-                        <button class="btn-buy" onclick="buyItem('https://robohash.org/seed10.png?set=set1&size=150x150', 10000)">10000 🔥</button>
                     </div>
                 </div>
 
