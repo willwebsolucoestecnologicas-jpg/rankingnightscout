@@ -107,17 +107,30 @@ function prepararJogo(data) {
     document.getElementById("hud-glicemia").innerText = glicemia;
     const hudStatus = document.getElementById("hud-status");
 
+    // LÓGICA DE DIFICULDADE DINÂMICA CORRIGIDA
     if (glicemia >= 70 && glicemia <= 140) {
+        // 🎯 NA META: Jogabilidade balanceada e fluida
         hudStatus.innerText = "⚡ VOO PERFEITO";
-        gravity = 0.25; jumpStrength = -5.5; pipeSpeed = 3.5; pipeGap = 180;
+        gravity = 0.25; 
+        jumpStrength = -5.5; 
+        pipeSpeed = 3.5; 
+        pipeGap = 180; // Espaço confortável
     } else if (glicemia > 140) {
+        // 🔥 ALTA (PESADO): Corpo letárgico, canos estreitos
         hudStatus.innerText = "🔥 PESADO/CAINDO";
         hudStatus.style.color = "var(--high-color)";
-        gravity = 0.4; jumpStrength = -7; pipeSpeed = 3; pipeGap = 210;
+        gravity = 0.45;       // Personagem cai muito mais rápido
+        jumpStrength = -6.5;  // Precisa de um pulo mais forte só pra não afundar de vez
+        pipeSpeed = 3;        // Mais lento, sensação de fadiga
+        pipeGap = 120;        // Espaço MUITO estreito, sufocante e difícil
     } else {
+        // ❄️ BAIXA (VISÃO TURVA): Desespero e falta de controle
         hudStatus.innerText = "❄️ FRAQUEZA";
         hudStatus.style.color = "var(--low-color)";
-        gravity = 0.2; jumpStrength = -4.5; pipeSpeed = 4.5; pipeGap = 170;
+        gravity = 0.15;       // Fica flutuando estranho
+        jumpStrength = -6;    // Pulo descontrolado
+        pipeSpeed = 5;        // Canos vindo muito rápido
+        pipeGap = 110;        // Quase impossível de acertar o timing
     }
 
     textoOverlay.innerText = "TUDO PRONTO!";
@@ -138,6 +151,11 @@ function iniciarFlappy() {
     // Inicia os loops do jogo e da voz
     clearInterval(loopJogo);
     clearInterval(loopVoz);
+    
+    // DESBLOQUEIO DE ÁUDIO MOBILE (Adicionado para segurança)
+    if(audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
     
     loopJogo = setInterval(atualizarJogo, 20);
     
@@ -166,6 +184,9 @@ function pular(e) {
 
 wrapper.addEventListener('touchstart', pular, {passive: false});
 wrapper.addEventListener('mousedown', pular);
+document.addEventListener('keydown', (event) => {
+    if(event.code === 'Space') { pular(); }
+});
 
 function atualizarJogo() {
     velocity += gravity;
